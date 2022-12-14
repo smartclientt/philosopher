@@ -1,0 +1,83 @@
+Threads :
+-	threads is like processes but they share memories between theme, 
+that means they have access to the same data memories in the same time
+-	threads have three part in his work process: read -> change data (for example increment a numbre) -> write
+-	the probleme with threads that some times some of the threads take a break in the "read" part
+and the others stay doing his job, and whene he comme back to works he is using the last data he read from the memorie
+so that's the issues (Race Conditions)
+-	how to solve this issues: we will use "mutex"
+
+Mutex :
+-	mutex is like a lock between threads
+-	we use lock and unlock function to manage threads to work properly
+-	never create and join threads in the same loop because they are working one after other so we wont use the power of threads
+
+
+
+Philosophers Probleme :
+-	philosopher stats: eating || thinking || sleeping
+	->	to "eat" they need tow forks (right and left)	
+	->	whene they "thinks", they cant interacte with other Philosophers
+		he may pick one fork at time
+		he can't pick up a fork that's already taked from other philosopher
+		whene a philo is hungry and has both his fork at the same time he statrt eating
+		whene he finish eating he put down both of his forks and start thinking again
+
+Structure of philo index i:
+we gonna loop all philosopher !!!
+Example 5 philo :
+-	philo he need to wait 2 forks "i" and "(i + 1) % 5" 
+-	after waiting this 2 fork, philo he will send signal 
+Dead lock Probleme : 
+-	we have this probleme when all philo are hungry in the same time and they took the left fork
+-	so there is no fork in the table
+-	and they will stay waiting infinitly because evry philosopher are waiting for his right fork
+->	solution 1: to solve this probleme we need to a void one philo at time so we secure that at least one philo have his tow fork right and left one
+->	solution 2: we can use also an asymetric solution :
+	-	whene an odd philo picks up his left and then his right fork whereas an other philo picks up his right adnd then his left fork
+
+Programe Args:
+-	nbr philo
+-	time to die (ms)
+-	time to eat (ms)
+-	time to sleep (ms)
+-	nbr of eime eache philo must eat
+
+Return Programe:
+-	timestamp_in_ms X has taken a fork
+-	timestamp_in_ms X is eating
+-	timestamp_in_ms X has is sleeping
+-	timestamp_in_ms X is thinking
+-	timestamp_in_ms X die
+
+Implimentation : 
+-	first i need to create a philo struct and tools struct:
+	->	t_philo
+			-	int *philo;
+			-	mutex[2]
+			-	index_philo
+	->	t_tools
+			-	time to die
+			-	time to eat
+			-	time to sleep
+			-	nbr of time to eat
+
+-	init all t_tools and tphilo struct
+	-	init mutex with 0 :
+		-	philo[i]->mutex[0] = 0
+		-	philo[i]->mutex[1] = 0
+	-	init tools with args value
+
+-	create threads with a routine
+	->	routine :
+		-	check_forks:
+			-	take left fork i % 2 = 0 // check philo index (i % n) zawji
+				- check if right mutex is available (philo[i % n]->mutex[0] == 0)
+					-	pthread_mutex_init(mutex[0])
+				- else if (mutex[0] != 0)
+					break;
+			-	take right fork (i+1) % 2 = 0 // check philo index (i % n) fardi
+				- check if right mutex is available (philo[i % n]->mutex[1] == 0)
+					-	pthread_mutex_init(mutex[1])
+				- else if (mutex[1] != 0)
+					break;
