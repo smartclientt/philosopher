@@ -6,7 +6,7 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 06:25:02 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/16 04:53:03 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/16 06:20:59 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ void	watcher(t_philo	**philo)
 		else if (ph->input->ttd < (get_time() - ph->last_time))
 		{
 			pthread_mutex_lock(&ph->input->print_mutex);
-			printf("%lld	%d	is dead", get_time() - ph->start_time,
+			printf("%lld	%d	is dead\n", get_time() - ph->start_time,
 				ph->index + 1);
+			usleep(5);
 			return ;
 		}
 	}
