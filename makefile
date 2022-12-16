@@ -6,14 +6,14 @@
 #    By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 13:05:24 by shbi              #+#    #+#              #
-#    Updated: 2022/12/12 23:46:14 by shbi             ###   ########.fr        #
+#    Updated: 2022/12/15 06:24:52 by shbi             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	philo
 SRCS		=	philo.c	\
-				tools.c tools_.c tools__.c
-				
+				tools.c tools_.c tools__.c routine.c routine_tools.c
+
 OBJS		=	$(SRCS:.c=.o)
 HEADR		=	philo.h
 CC			=	cc

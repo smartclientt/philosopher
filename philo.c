@@ -6,24 +6,24 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 13:05:19 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/14 03:17:25 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/16 04:32:07 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int mails = 0;
 
 void	*routine(void *arg)
 {
 	t_philo	*ph;
 
 	ph = (t_philo *)arg;
-	while (mails < 2000000)
+	if (ph->index % 2 == 0)
+		usleep(ph->input->tte);
+	while (1)
 	{
-		// pthread_mutex_lock(&ph->forks);
-		mails++;
-		// pthread_mutex_unlock(&ph->forks);
+		eating(ph);
+		sleeping(ph);
+		thinking(ph);
 	}
 	return (NULL);
 }
@@ -31,16 +31,24 @@ void	*routine(void *arg)
 int	destroy_mutex(t_philo **philo)
 {
 	t_philo	*ph;
+	int		i;
 
 	ph = *philo;
-	while (ph)
+	// if (pthread_mutex_destroy(&ph->input->print_mutex))
+	// {
+	// 	ft_putstr_fd("Error: destroy mutex print\n", 1);
+	// 	return (0);
+	// }
+	i = 0;
+	while (i < ph->input->nbr_philo)
 	{
 		if (pthread_mutex_destroy(&ph->forks))
 		{
-			ft_putstr_fd("Error: destroy mutex list\n", 2);
+			ft_putstr_fd("Error: destroy mutex list\n", 1);
 			return (0);
 		}
 		ph = ph->next;
+		i++;
 	}
 	return (1);
 }
@@ -60,10 +68,9 @@ int	main(int ac, char **av)
 			return (1);
 		if (!create_threads(&philo))
 			return (1);
-		if (!destroy_mutex(&philo))
-			return (1);
-		printf("mails == %d\n", mails);
+		watcher(&philo);
+		// if (!destroy_mutex(&philo))
+		// 	return (1);
 	}
-	// printf("tte =  %d | ttd = %d | tts = %d | nbr_philo = %d\n", input.tte, philo->input->ttd, input.tts, input.nbr_philo);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 18:18:28 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/14 03:12:02 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/16 00:12:55 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,31 +36,29 @@ int	create_threads(t_philo **philo)
 
 	i = 0;
 	ph = *philo;
-	printf("nbr philo = %d\n", ph->input->nbr_philo);
 	while (i < ph->input->nbr_philo)
 	{
-		if (pthread_create(&(ph->ph_th), NULL, &routine, ph))
+		ph->start_time = get_time();
+		if (pthread_create(&(ph->ph_th), NULL, routine, ph))
 		{
 			ft_putstr_fd("Error: create threads\n", 2);
 			return (0);
 		}
 		if (i + 1 != ph->input->nbr_philo)
 			ph = ph->next;
-		printf("thread %d has started\n", i);
 		i++;
 	}
 	i = 0;
 	ph = *philo;
 	while (i < ph->input->nbr_philo)
 	{
-		if (pthread_join(ph->ph_th, NULL))
+		if (pthread_detach(ph->ph_th))
 		{
 			ft_putstr_fd("Error: create threads\n", 2);
 			return (0);
 		}
 		if (i + 1 != ph->input->nbr_philo)
 			ph = ph->next;
-		printf("thread %d has finished\n", i);
 		i++;
 	}
 	return (1);
@@ -83,14 +81,18 @@ int	create_philo_list(t_philo **philo, t_input *input)
 		i++;
 	}
 	ph = *philo;
-	while (ph)
+	i = 0;
+	while (i < input->nbr_philo)
 	{
 		if (pthread_mutex_init(&ph->forks, NULL))
 		{
 			ft_putstr_fd("Error: initial mutex\n", 2);
 			return (0);
 		}
+		if (!ph->next)
+			ph->next = ph->head;
 		ph = ph->next;
+		i++;
 	}
 	return (1);
 }
@@ -103,4 +105,12 @@ void	init_input(t_input *input, int ac, char **av)
 	input->tts = ft_atoi(av[4]);
 	if (ac == 6)
 		input->nbr_tte_must = ft_atoi(av[5]);
+	else
+		input->nbr_tte_must = -1;
+	input->c_ph_eat = 0;
+	if (pthread_mutex_init(&input->print_mutex, NULL))
+	{
+		ft_putstr_fd("Error: initial print mutex\n", 2);
+		return ;
+	}
 }
