@@ -6,7 +6,7 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 13:05:19 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/16 04:32:07 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/17 17:10:17 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,22 @@ void	*routine(void *arg)
 int	destroy_mutex(t_philo **philo)
 {
 	t_philo	*ph;
+	t_philo	*head;
 	int		i;
 
 	ph = *philo;
-	// if (pthread_mutex_destroy(&ph->input->print_mutex))
-	// {
-	// 	ft_putstr_fd("Error: destroy mutex print\n", 1);
-	// 	return (0);
-	// }
+	head = *philo;
 	i = 0;
 	while (i < ph->input->nbr_philo)
 	{
-		if (pthread_mutex_destroy(&ph->forks))
-		{
-			ft_putstr_fd("Error: destroy mutex list\n", 1);
-			return (0);
-		}
+		pthread_mutex_destroy(&ph->forks);
 		ph = ph->next;
 		i++;
+	}
+	if (pthread_mutex_destroy(&head->input->print_mutex))
+	{
+		pthread_mutex_unlock(&head->input->print_mutex);
+		pthread_mutex_destroy(&head->input->print_mutex);
 	}
 	return (1);
 }
@@ -56,14 +54,18 @@ int	destroy_mutex(t_philo **philo)
 int	main(int ac, char **av)
 {
 	t_input	input;
+	t_philo	*temp;
 	t_philo	*philo;
+	int		i;
 
+	i = 0;
 	philo = NULL;
 	if (ac == 5 || ac == 6)
 	{
 		if (!check_args(ac, av))
 			return (1);
 		init_input(&input, ac, av);
+		pthread_mutex_init(&input.data_race_mutex, NULL);
 		if (!create_philo_list(&philo, &input))
 			return (1);
 		if (!create_threads(&philo))
@@ -71,6 +73,13 @@ int	main(int ac, char **av)
 		watcher(&philo);
 		// if (!destroy_mutex(&philo))
 		// 	return (1);
+		while (i < philo->input->nbr_philo)
+		{
+			temp = philo->next;
+			free(philo);
+			philo = temp;
+			i++;
+		}
 	}
 	return (0);
 }

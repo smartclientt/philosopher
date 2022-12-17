@@ -6,7 +6,7 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 13:05:22 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/16 04:49:05 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/17 17:07:21 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,18 @@
 typedef struct s_input
 {
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	data_race_mutex;
 	int				nbr_philo;
 	int				ttd;
 	int				tts;
 	int				tte;
 	int				nbr_tte_must;
 	int				c_ph_eat;
+	long long		start_time;
 }	t_input;
 
 typedef struct s_philo
 {
-	long long		start_time;
 	long long		last_time;
 	int				c_eat;
 	int				index;

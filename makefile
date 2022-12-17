@@ -6,7 +6,7 @@
 #    By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 13:05:24 by shbi              #+#    #+#              #
-#    Updated: 2022/12/15 06:24:52 by shbi             ###   ########.fr        #
+#    Updated: 2022/12/17 17:14:35 by shbi             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS		=	philo.c	\
 OBJS		=	$(SRCS:.c=.o)
 HEADR		=	philo.h
 CC			=	cc
-FLAGS		=	-Wall -Werror -Wextra
+FLAGS		=	-Wall -Werror -Wextra 
+# -fsanitize=thread
 RM			=	rm -rf
 
 all			:	$(NAME)

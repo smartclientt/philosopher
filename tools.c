@@ -6,7 +6,7 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 18:18:28 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/16 00:12:55 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/17 17:09:46 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_args(int ac, char **av)
 	{
 		if (ft_atoi(av[i]) <= 0)
 		{
-			ft_putstr_fd("Error: input\n", 2);
+			printf("Error: input\n");
 			return (0);
 		}
 		i++;
@@ -38,12 +38,7 @@ int	create_threads(t_philo **philo)
 	ph = *philo;
 	while (i < ph->input->nbr_philo)
 	{
-		ph->start_time = get_time();
-		if (pthread_create(&(ph->ph_th), NULL, routine, ph))
-		{
-			ft_putstr_fd("Error: create threads\n", 2);
-			return (0);
-		}
+		pthread_create(&(ph->ph_th), NULL, routine, ph);
 		if (i + 1 != ph->input->nbr_philo)
 			ph = ph->next;
 		i++;
@@ -52,11 +47,7 @@ int	create_threads(t_philo **philo)
 	ph = *philo;
 	while (i < ph->input->nbr_philo)
 	{
-		if (pthread_detach(ph->ph_th))
-		{
-			ft_putstr_fd("Error: create threads\n", 2);
-			return (0);
-		}
+		pthread_detach(ph->ph_th);
 		if (i + 1 != ph->input->nbr_philo)
 			ph = ph->next;
 		i++;
@@ -70,12 +61,13 @@ int	create_philo_list(t_philo **philo, t_input *input)
 	t_philo	*ph;
 
 	i = 0;
+	input->start_time = get_time();
 	while (i < input->nbr_philo)
 	{
 		ft_lstadd_end(philo, ft_lstnew(input, i));
 		if (!philo)
 		{
-			ft_putstr_fd("Error: creation philo list\n", 2);
+			printf("Error: creation philo list\n");
 			return (0);
 		}
 		i++;
@@ -84,11 +76,7 @@ int	create_philo_list(t_philo **philo, t_input *input)
 	i = 0;
 	while (i < input->nbr_philo)
 	{
-		if (pthread_mutex_init(&ph->forks, NULL))
-		{
-			ft_putstr_fd("Error: initial mutex\n", 2);
-			return (0);
-		}
+		pthread_mutex_init(&ph->forks, NULL);
 		if (!ph->next)
 			ph->next = ph->head;
 		ph = ph->next;
@@ -108,9 +96,5 @@ void	init_input(t_input *input, int ac, char **av)
 	else
 		input->nbr_tte_must = -1;
 	input->c_ph_eat = 0;
-	if (pthread_mutex_init(&input->print_mutex, NULL))
-	{
-		ft_putstr_fd("Error: initial print mutex\n", 2);
-		return ;
-	}
+	pthread_mutex_init(&input->print_mutex, NULL);
 }

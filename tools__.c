@@ -6,7 +6,7 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 23:37:46 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/16 04:39:46 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/17 15:21:45 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,13 @@ t_philo	*ft_lstnew(t_input *input, int index)
 {
 	t_philo	*new_node;
 
-	new_node = (t_philo *)malloc(sizeof(t_philo));
+	new_node = (t_philo *) malloc(sizeof(t_philo));
 	if (!new_node)
 		return (NULL);
 	new_node->input = input;
 	new_node->index = index;
 	new_node->c_eat = 0;
-	new_node->start_time = get_time();
-	new_node->last_time = get_time();
+	new_node->last_time = input->start_time;
 	new_node->next = NULL;
 	return (new_node);
 }
