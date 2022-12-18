@@ -6,7 +6,7 @@
 #    By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 13:05:24 by shbi              #+#    #+#              #
-#    Updated: 2022/12/18 07:43:05 by shbi             ###   ########.fr        #
+#    Updated: 2022/12/18 17:03:37 by shbi             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ FLAGS		=	-Wall -Werror -Wextra
 RM			=	rm -rf
 
 all			:	$(NAME)
-				$(RM) $(OBJS)
 $(NAME)		:	$(OBJS)
 				$(CC) $(FLAGS) -o $(NAME) $(OBJS)
 %.o			:	%.c $(HEADR)
