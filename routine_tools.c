@@ -6,7 +6,7 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 06:25:02 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/17 17:08:34 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/18 13:11:37 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,9 @@ long long	get_time(void)
 
 void	print_with_mutex(char *str, t_philo *ph)
 {
-	long long	time;
-
 	pthread_mutex_lock(&ph->input->print_mutex);
-	time = get_time() - ph->input->start_time;
-	printf("%lld	%d	%s", time, ph->index + 1, str);
+	printf("%lld	%d	%s", get_time() - ph->input->start_time,
+		ph->index + 1, str);
 	pthread_mutex_unlock(&ph->input->print_mutex);
 }
 
@@ -41,7 +39,7 @@ void	my_usleep(long long time)
 		usleep(50);
 }
 
-void	watcher(t_philo	**philo)
+int	watcher(t_philo	**philo)
 {
 	t_philo	*ph;
 
@@ -51,7 +49,7 @@ void	watcher(t_philo	**philo)
 		if (ph->input->c_ph_eat == ph->input->nbr_philo)
 		{
 			pthread_mutex_lock(&ph->input->print_mutex);
-			return ;
+			return (1);
 		}
 		else if (ph->input->ttd < (get_time() - ph->last_time))
 		{
@@ -59,7 +57,8 @@ void	watcher(t_philo	**philo)
 			usleep(1000);
 			printf("%lld	%d	is dead\n", get_time() - ph->input->start_time,
 				ph->index + 1);
-			return ;
+			return (1);
 		}
+		ph = ph->next;
 	}
 }

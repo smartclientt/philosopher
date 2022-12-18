@@ -6,21 +6,11 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 23:37:46 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/17 15:21:45 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/18 09:00:16 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-t_philo	*ft_free(t_philo **lst)
-{
-	if (*lst)
-	{
-		free(*lst);
-		*lst = NULL;
-	}
-	return (*lst);
-}
 
 t_philo	*ft_lstnew(t_input *input, int index)
 {

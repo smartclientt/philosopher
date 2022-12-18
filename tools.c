@@ -6,7 +6,7 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 18:18:28 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/17 17:09:46 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/18 10:06:06 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,6 @@ int	create_philo_list(t_philo **philo, t_input *input)
 	while (i < input->nbr_philo)
 	{
 		ft_lstadd_end(philo, ft_lstnew(input, i));
-		if (!philo)
-		{
-			printf("Error: creation philo list\n");
-			return (0);
-		}
 		i++;
 	}
 	ph = *philo;

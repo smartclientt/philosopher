@@ -6,7 +6,7 @@
 /*   By: shbi <shbi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 13:05:22 by shbi              #+#    #+#             */
-/*   Updated: 2022/12/17 17:07:21 by shbi             ###   ########.fr       */
+/*   Updated: 2022/12/18 12:13:23 by shbi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@ void		*routine(void *arg);
 long long	get_time(void);
 void		print_with_mutex(char *str, t_philo *ph);
 void		my_usleep(long long time);
-void		watcher(t_philo	**philo);
+int			watcher(t_philo	**philo);
 void		eating(t_philo *ph);
 void		sleeping(t_philo *ph);
 void		thinking(t_philo *ph);
+void		free_philo(t_philo	*philo);
 
 #endif
